@@ -125,35 +125,17 @@
     gameOver = true;
     sessionStorage.setItem(SESSION_KEY, 'true');
     const btn = boardEl.children[i];
-    btn.classList.add('revealed', 'star', 'loss-bloom');
+    btn.classList.add('revealed', 'star', 'loss-fade');
     btn.innerHTML = starSvg();
-    messageEl.textContent = '✦ soft landing ✦';
-
-    const rect = btn.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    const burstScale = Math.max(window.innerWidth, window.innerHeight) * 2.2;
-
-    const washEl = document.createElement('div');
-    washEl.className = 'loss-wash';
-    washEl.style.setProperty('--loss-x', `${x}px`);
-    washEl.style.setProperty('--loss-y', `${y}px`);
-    washEl.style.setProperty('--loss-scale', `${burstScale}`);
-
-    const burstEl = document.createElement('div');
-    burstEl.className = 'loss-burst';
-    washEl.appendChild(burstEl);
-
-    overlayEl.appendChild(washEl);
+    messageEl.textContent = 'oh no, star down!';
 
     requestAnimationFrame(() => {
-      washEl.classList.add('active');
+      btn.classList.add('loss-white');
     });
 
     setTimeout(() => {
-      washEl.classList.add('fade-out');
-      setTimeout(() => washEl.remove(), 1200);
-    }, 200);
+      btn.classList.add('vanish');
+    }, 1320);
 
     setTimeout(dissolve, 900);
   }
@@ -170,16 +152,15 @@
     sessionStorage.setItem(SESSION_KEY, 'true');
     messageEl.textContent = '✦ found them all!';
 
-    const RIPPLE_TOTAL_MS = 1500;
-    const VANISH_MS = 350;
-    const center = (SIZE - 1) / 2;
-    const maxDist = Math.hypot(center, center);
+    const RIPPLE_TOTAL_MS = 1000;
+    const VANISH_MS = 220;
+    const tiles = Array.from(boardEl.children);
+    const order = tiles
+      .map((_, index) => index)
+      .sort(() => Math.random() - 0.5);
 
-    Array.from(boardEl.children).forEach((tile, i) => {
-      const row = Math.floor(i / SIZE);
-      const col = i % SIZE;
-      const dist = Math.hypot(row - center, col - center);
-      const delay = (dist / maxDist) * (RIPPLE_TOTAL_MS - VANISH_MS);
+    tiles.forEach((tile, index) => {
+      const delay = order.indexOf(index) * 14;
       tile.style.transition = `opacity ${VANISH_MS}ms ease ${delay}ms, transform ${VANISH_MS}ms ease ${delay}ms`;
       tile.classList.add('vanish');
     });
