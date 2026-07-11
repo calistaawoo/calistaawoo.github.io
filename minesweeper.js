@@ -70,17 +70,11 @@
       btn.className = 'tile';
       btn.type = 'button';
 
-      let clickTimer = null;
       btn.addEventListener('click', () => {
-        if (clickTimer) return;
-        clickTimer = setTimeout(() => {
-          clickTimer = null;
-          handleClick(i);
-        }, 220);
+        handleClick(i);
       });
-      btn.addEventListener('dblclick', () => {
-        clearTimeout(clickTimer);
-        clickTimer = null;
+      btn.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
         toggleFlag(i);
       });
 
@@ -131,10 +125,37 @@
     gameOver = true;
     sessionStorage.setItem(SESSION_KEY, 'true');
     const btn = boardEl.children[i];
-    btn.classList.add('revealed', 'star', 'exploding');
+    btn.classList.add('revealed', 'star', 'loss-bloom');
     btn.innerHTML = starSvg();
-    messageEl.textContent = '✦ boom! ✦';
-    setTimeout(dissolve, 650);
+    messageEl.textContent = '✦ soft landing ✦';
+
+    const rect = btn.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const burstScale = Math.max(window.innerWidth, window.innerHeight) * 2.2;
+
+    const washEl = document.createElement('div');
+    washEl.className = 'loss-wash';
+    washEl.style.setProperty('--loss-x', `${x}px`);
+    washEl.style.setProperty('--loss-y', `${y}px`);
+    washEl.style.setProperty('--loss-scale', `${burstScale}`);
+
+    const burstEl = document.createElement('div');
+    burstEl.className = 'loss-burst';
+    washEl.appendChild(burstEl);
+
+    overlayEl.appendChild(washEl);
+
+    requestAnimationFrame(() => {
+      washEl.classList.add('active');
+    });
+
+    setTimeout(() => {
+      washEl.classList.add('fade-out');
+      setTimeout(() => washEl.remove(), 1200);
+    }, 200);
+
+    setTimeout(dissolve, 900);
   }
 
   function checkWin() {
