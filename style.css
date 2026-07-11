@@ -1,0 +1,245 @@
+/* calista's site — base palette */
+
+:root {
+  --color-bg: #E6EEF1;
+  --color-heading: #1B4F87;
+  --color-muted: #4E7183;
+  --color-link: #6BA3D0;
+  --color-border: #CDDBE0;
+  --color-card: #FFFFFF;
+  --color-gold: #F5B921;
+
+  --mine-backdrop: #1B4F87;
+  --mine-tile: #378ADD;
+  --mine-tile-hover: #5B9BD5;
+  --mine-revealed: #DCEBF7;
+  --mine-number: #1B4F87;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-heading);
+  font-family: 'DM Mono', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2.4rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.8rem;
+  color: var(--color-heading);
+}
+
+p {
+  font-size: 1rem;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+nav {
+  margin-top: 1.6rem;
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-top: 1rem;
+}
+
+.star {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 0.8rem;
+}
+
+.star path {
+  fill: var(--color-gold);
+}
+
+/* minesweeper intro overlay — piplup blue */
+
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--mine-backdrop);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  transition: opacity 0.7s ease;
+  opacity: 1;
+}
+
+#intro-overlay.dissolve {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#intro-overlay.hidden {
+  display: none;
+}
+
+.intro-title {
+  color: #FAFAFA;
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.intro-blurb {
+  color: #FBFAF6;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+  max-width: 350px;
+}
+
+.intro-message {
+  min-height: 1.4rem;
+  color: var(--color-gold);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 40px);
+  grid-template-rows: repeat(8, 40px);
+  gap: 4px;
+}
+
+.tile {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: var(--mine-tile);
+  font-family: 'DM Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--mine-number);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  padding: 0;
+}
+
+.tile:hover:not(.revealed) {
+  background: var(--mine-tile-hover);
+}
+
+.tile.revealed {
+  background: var(--mine-revealed);
+  cursor: default;
+}
+
+.tile.star svg {
+  width: 20px;
+  height: 20px;
+}
+
+.tile.star svg path {
+  fill: var(--color-gold);
+}
+
+.tile.flagged,
+.tile.flagged:hover {
+  background: var(--color-gold);
+  animation: flag-pop 0.25s ease;
+}
+
+@keyframes flag-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tile.vanish {
+  opacity: 0;
+  transform: scale(0.2);
+  pointer-events: none;
+}
+
+.tile.exploding {
+  animation: star-explode 0.6s ease-out forwards;
+  z-index: 1;
+}
+
+@keyframes star-explode {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(245, 185, 33, 0.7);
+  }
+
+  40% {
+    transform: scale(1.7);
+    box-shadow: 0 0 24px 12px rgba(245, 185, 33, 0.6);
+  }
+
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+    box-shadow: 0 0 36px 18px rgba(245, 185, 33, 0);
+  }
+}
+
+.skip-btn {
+  background: none;
+  border: 1px solid var(--mine-tile-hover);
+  color: #DCEBF7;
+  font-family: 'DM Mono', monospace;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.skip-btn:hover {
+  background: var(--mine-tile-hover);
+}
