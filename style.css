@@ -8,6 +8,8 @@
   --color-border: #CDDBE0;
   --color-card: #FFFFFF;
   --color-gold: #F5B921;
+  --color-gold-hover: #FFC93C;
+  --color-accent: #3A7EBF;
 
   --mine-backdrop: #1B4F87;
   --mine-tile: #378ADD;
@@ -79,11 +81,194 @@ nav {
 .star {
   width: 28px;
   height: 28px;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.2rem;
 }
 
 .star path {
   fill: var(--color-gold);
+}
+
+body.landing-page,
+body.about-page {
+  display: block;
+  padding: 1.2rem 1rem 1.5rem;
+  align-items: flex-start;
+}
+
+body.landing-page .container {
+  width: min(100%, 480px);
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: auto;
+  padding-top: 18vh;
+}
+
+body.about-page .container {
+  width: min(100%, 480px);
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 3.5rem;
+}
+
+body.landing-page h1 {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1.45rem, 2.4vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-heading);
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.landing-copy {
+  border-top: 0.5px solid var(--color-border);
+  padding-top: 0.9rem;
+  margin-top: 0.35rem;
+}
+
+.landing-copy p {
+  font-size: 0.95rem;
+  color: var(--color-heading);
+}
+
+body.landing-page nav {
+  margin-top: 1.2rem;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.about-header {
+  margin-top: 1.4rem;
+  margin-bottom: 1.8rem;
+}
+
+.about-header h1 {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(1.65rem, 2.6vw, 1.9rem);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-heading);
+  margin-bottom: 0.6rem;
+}
+
+.about-subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.subtitle-star {
+  display: inline-block;
+  color: var(--color-gold);
+  margin-right: 0.25rem;
+  transform: translateY(-1px);
+}
+
+.about-card {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  margin-top: 0;
+}
+
+.about-section+.about-section {
+  border-top: 0.5px solid var(--color-border);
+  margin-top: 1.9rem;
+  padding-top: 1.9rem;
+}
+
+.about-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.about-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  line-height: 1;
+}
+
+.about-star {
+  display: inline-block;
+  color: var(--color-gold);
+  font-size: var(--star-size, 14px);
+  transform: rotate(var(--star-rotate, 0deg)) translateY(var(--star-offset, 0px));
+  line-height: 1;
+  transition: color 0.25s ease;
+}
+
+.about-star.star-a {
+  --star-size: 12px;
+  --star-rotate: -7deg;
+  --star-offset: -2px;
+}
+
+.about-star.star-b {
+  --star-size: 13px;
+  --star-rotate: 6deg;
+  --star-offset: 1px;
+}
+
+.about-star.star-c {
+  --star-size: 15px;
+  --star-rotate: -4deg;
+  --star-offset: -1px;
+}
+
+.about-star.star-d {
+  --star-size: 14px;
+  --star-rotate: 5deg;
+  --star-offset: 1px;
+}
+
+.about-star.star-e {
+  --star-size: 13px;
+  --star-rotate: -3deg;
+  --star-offset: -1px;
+}
+
+.about-heading h2 {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.about-body {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-heading);
+  letter-spacing: 0.01em;
+}
+
+body.about-page nav {
+  margin-top: 1.4rem;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .about-section:hover .about-star {
+    color: var(--color-gold-hover);
+  }
 }
 
 /* minesweeper intro overlay — piplup blue */
