@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Calista Woo</title>
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M58.33,2.73 L65.82,34.72 L97.53,43.32 L69.42,60.33 L71.04,93.14 L46.18,71.67 L15.47,83.35 L28.21,53.06 L7.62,27.46 L40.36,30.23 Z' fill='%233A7EBF'/></svg>">
@@ -15,14 +16,6 @@
 </head>
 
 <body class="landing-page">
-  <div id="intro-overlay">
-    <p class="intro-title">try not to step on the stars!</p>
-    <div class="board" id="board"></div>
-    <p class="intro-blurb">right-click to mark minesweeper flags.</p>
-    <p class="intro-message" id="intro-message"></p>
-    <button class="skip-btn" id="skip-btn">skip the game →</button>
-  </div>
-
   <main class="container landing-container">
     <svg class="star" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -33,12 +26,10 @@
       <p>I'm an undergrad at Stanford, studying computer science and trying my best to live the good life.</p>
     </div>
     <nav class="landing-nav" aria-label="site links">
-      <a href="journal.html">journal</a>
       <a href="about.html">about</a>
+      <a href="minesweeper.html">minesweeper</a>
     </nav>
   </main>
-
-  <script src="minesweeper.js"></script>
 </body>
 
 </html>

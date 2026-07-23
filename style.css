@@ -66,6 +66,7 @@ a:hover {
 nav {
   margin-top: 1.6rem;
   display: flex;
+  flex-wrap: wrap;
   gap: 1.2rem;
   justify-content: center;
 }
@@ -89,7 +90,8 @@ nav {
 }
 
 body.landing-page,
-body.about-page {
+body.about-page,
+body.game-page {
   display: block;
   padding: 1.2rem 1rem 1.5rem;
   align-items: flex-start;
@@ -118,7 +120,20 @@ body.about-page .container {
   padding-top: 3.5rem;
 }
 
-body.landing-page h1 {
+body.game-page .container {
+  width: min(100%, 480px);
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: auto;
+  padding-top: 3.5rem;
+}
+
+body.landing-page h1,
+body.game-page h1 {
   font-family: 'DM Mono', monospace;
   font-size: clamp(1.45rem, 2.4vw, 1.75rem);
   font-weight: 500;
@@ -127,6 +142,37 @@ body.landing-page h1 {
   color: var(--color-heading);
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
+}
+
+.game-blurb {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.replay-btn {
+  background: none;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-family: 'DM Mono', monospace;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-top: 1.2rem;
+  max-width: 100%;
+  text-align: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.replay-btn:hover {
+  background: var(--color-accent);
+  color: #FFFFFF;
 }
 
 .landing-copy {
@@ -140,7 +186,8 @@ body.landing-page h1 {
   color: var(--color-heading);
 }
 
-body.landing-page nav {
+body.landing-page nav,
+body.game-page nav {
   margin-top: 1.2rem;
   justify-content: flex-start;
   gap: 1rem;
@@ -283,6 +330,8 @@ body.about-page nav {
   align-items: center;
   justify-content: center;
   gap: 1.2rem;
+  padding: 1rem;
+  overflow-y: auto;
   transition: opacity 0.7s ease;
   opacity: 1;
 }
@@ -320,15 +369,17 @@ body.about-page nav {
 }
 
 .board {
+  --board-size: 8;
+  --tile-size: min(40px, calc((100vw - 2rem - 28px) / var(--board-size)));
   display: grid;
-  grid-template-columns: repeat(8, 40px);
-  grid-template-rows: repeat(8, 40px);
+  grid-template-columns: repeat(var(--board-size), var(--tile-size));
+  grid-template-rows: repeat(var(--board-size), var(--tile-size));
   gap: 4px;
 }
 
 .tile {
-  width: 40px;
-  height: 40px;
+  width: var(--tile-size);
+  height: var(--tile-size);
   border: none;
   border-radius: 8px;
   background: var(--mine-tile);
@@ -351,6 +402,11 @@ body.about-page nav {
 .tile.revealed {
   background: var(--mine-revealed);
   cursor: default;
+}
+
+body.game-page .tile.revealed:not(.star) {
+  background: #FBFAF6;
+  border: 1px solid var(--color-border);
 }
 
 .tile.star svg {
@@ -417,4 +473,80 @@ body.about-page nav {
 
 .skip-btn:hover {
   background: var(--mine-tile-hover);
+}
+
+@media (max-width: 480px) {
+  body {
+    align-items: flex-start;
+  }
+
+  .container {
+    width: 100%;
+    padding: 1.5rem 1.25rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  body.about-page {
+    padding: 0.75rem 1.5rem 1.25rem;
+  }
+
+  body.landing-page,
+  body.game-page {
+    padding: 0.75rem 2rem 1.25rem;
+  }
+
+  body.landing-page .container,
+  body.about-page .container,
+  body.game-page .container {
+    width: 100%;
+  }
+
+  body.landing-page .container {
+    padding-top: 12vh;
+    text-align: center;
+  }
+
+  body.landing-page nav {
+    justify-content: center;
+  }
+
+  body.about-page .container,
+  body.game-page .container {
+    padding-top: 2rem;
+  }
+
+  body.landing-page h1,
+  body.game-page h1,
+  .about-header h1 {
+    font-size: 1.35rem;
+    letter-spacing: 0.1em;
+  }
+
+  .game-blurb {
+    font-size: 0.78rem;
+  }
+
+  .about-header {
+    margin-bottom: 1.4rem;
+  }
+
+  .about-body {
+    font-size: 0.95rem;
+  }
+
+  #intro-overlay {
+    gap: 0.85rem;
+  }
+
+  .intro-title {
+    font-size: 1.05rem;
+  }
+
+  .intro-blurb {
+    max-width: 100%;
+    font-size: 0.72rem;
+  }
 }
