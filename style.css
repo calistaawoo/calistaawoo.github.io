@@ -511,6 +511,7 @@ body.game-page .tile.revealed:not(.star) {
 
   body.landing-page nav {
     justify-content: center;
+    font-size: 0.85rem;
   }
 
   body.about-page .container,
@@ -518,11 +519,19 @@ body.game-page .tile.revealed:not(.star) {
     padding-top: 2rem;
   }
 
-  body.landing-page h1,
+  body.landing-page h1 {
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+  }
+
   body.game-page h1,
   .about-header h1 {
     font-size: 1.35rem;
     letter-spacing: 0.1em;
+  }
+
+  .landing-copy p {
+    font-size: 0.85rem;
   }
 
   .game-blurb {
