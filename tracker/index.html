@@ -232,6 +232,41 @@
       color: var(--gold);
     }
 
+    .login-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      padding: 0.9rem;
+      background: var(--bg);
+      border-radius: 12px;
+    }
+
+    .login-panel input {
+      font-family: inherit;
+      font-size: 14px;
+      padding: 0.6rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--deep);
+    }
+
+    .login-panel .login-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .login-panel .login-actions button {
+      font-size: 13px;
+      padding: 0.6rem 0.8rem;
+    }
+
+    .login-error {
+      font-size: 12px;
+      color: #c0453a;
+    }
+
     .spark-star {
       position: fixed;
       pointer-events: none;
@@ -274,6 +309,16 @@
       <button class="edit-toggle" id="editToggle" title="sign in to edit">☆</button>
     </div>
     <p class="sub">one problem a day since june 11 &middot; <span id="today"></span></p>
+
+    <form class="login-panel" id="loginPanel" style="display:none">
+      <input type="email" id="loginEmail" placeholder="email" autocomplete="email" required>
+      <input type="password" id="loginPassword" placeholder="password" autocomplete="current-password" required>
+      <p class="login-error" id="loginError" style="display:none"></p>
+      <div class="login-actions">
+        <button type="submit" class="btn-primary">sign in</button>
+        <button type="button" class="btn-undo" id="loginCancel">cancel</button>
+      </div>
+    </form>
 
     <div class="stats">
       <div class="stat">
@@ -408,17 +453,35 @@
       if (confirm('Reset your solved count to 0?')) set(countRef, 0);
     };
 
+    var loginPanel = document.getElementById('loginPanel');
+    var loginError = document.getElementById('loginError');
+
+    function hideLoginPanel() {
+      loginPanel.style.display = 'none';
+      loginError.style.display = 'none';
+      loginPanel.reset();
+    }
+
     document.getElementById('editToggle').onclick = function () {
       if (auth.currentUser) {
         if (confirm('Sign out of edit mode?')) signOut(auth);
         return;
       }
-      var email = prompt('Email:');
-      if (!email) return;
-      var password = prompt('Password:');
-      if (!password) return;
-      signInWithEmailAndPassword(auth, email, password).catch(function (err) {
-        alert('Sign-in failed: ' + err.message);
+      loginPanel.style.display = loginPanel.style.display === 'none' ? 'flex' : 'none';
+      if (loginPanel.style.display === 'flex') document.getElementById('loginEmail').focus();
+    };
+
+    document.getElementById('loginCancel').onclick = hideLoginPanel;
+
+    loginPanel.onsubmit = function (e) {
+      e.preventDefault();
+      var email = document.getElementById('loginEmail').value;
+      var password = document.getElementById('loginPassword').value;
+      signInWithEmailAndPassword(auth, email, password).then(function () {
+        hideLoginPanel();
+      }).catch(function (err) {
+        loginError.textContent = 'Sign-in failed: ' + err.message;
+        loginError.style.display = 'block';
       });
     };
 
