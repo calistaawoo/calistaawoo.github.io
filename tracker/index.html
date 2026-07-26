@@ -125,6 +125,13 @@
       margin-bottom: 1.75rem;
     }
 
+    .thanks {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
     .buttons {
       display: flex;
       gap: 10px;
@@ -205,6 +212,26 @@
       color: var(--mid);
     }
 
+    .edit-toggle {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--border);
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .edit-toggle:hover {
+      color: var(--mid);
+    }
+
+    .edit-toggle.is-signed-in {
+      color: var(--gold);
+    }
+
     .spark-star {
       position: fixed;
       pointer-events: none;
@@ -238,6 +265,7 @@
   <div class="card">
     <div class="header">
       <h1>wow i love leetcoding in the summer!</h1>
+      <button class="edit-toggle" id="editToggle" title="sign in to edit">✎</button>
     </div>
     <p class="sub">one problem a day since june 11 &middot; <span id="today"></span></p>
 
@@ -260,19 +288,45 @@
       <div class="bar-fill" id="bar"></div>
     </div>
     <p class="progress-label" id="progressLabel">0 of 0</p>
+    <p class="thanks" id="thanksMsg">thanks for coming along with the struggle ...</p>
 
-    <div class="buttons">
+    <div class="buttons" id="editControls" style="display:none">
       <button class="btn-primary" id="add">solved another one!</button>
       <button class="btn-undo" id="undo">undo</button>
     </div>
 
-    <button class="reset" id="reset">!! reset count</button>
+    <button class="reset" id="reset" style="display:none">!! reset count</button>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+    import {
+      getDatabase, ref, onValue, set
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC3FdE2rICmZcQndr6xlz-s6TB5B_WQNZo",
+      authDomain: "leetcode-tracker-e1914.firebaseapp.com",
+      databaseURL: "https://leetcode-tracker-e1914-default-rtdb.firebaseio.com",
+      projectId: "leetcode-tracker-e1914",
+      storageBucket: "leetcode-tracker-e1914.firebasestorage.app",
+      messagingSenderId: "895179339055",
+      appId: "1:895179339055:web:e14486e73d80e654141dda"
+    };
+
+    const OWNER_UID = "h0EwGXM2h6fsnF8zpMGtgsAwHYs2";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const countRef = ref(db, 'count');
+
     var START = new Date(2026, 5, 11); // June 11, 2026
-    var KEY = 'lc_summer_count';
-    var count = parseInt(localStorage.getItem(KEY), 10) || 0;
+    var count = 0;
+    var canEdit = false;
 
     function daysSince() {
       var now = new Date();
@@ -309,8 +363,6 @@
       }
     }
 
-    function save() { localStorage.setItem(KEY, String(count)); }
-
     function burstStars(target) {
       var rect = target.getBoundingClientRect();
       var originX = rect.left + rect.width / 2;
@@ -339,11 +391,43 @@
       }
     }
 
-    document.getElementById('add').onclick = function () { count++; burstStars(document.getElementById('statusBox')); render(); save(); };
-    document.getElementById('undo').onclick = function () { if (count > 0) count--; render(); save(); };
-    document.getElementById('reset').onclick = function () {
-      if (confirm('Reset your solved count to 0?')) { count = 0; render(); save(); }
+    document.getElementById('add').onclick = function () {
+      burstStars(document.getElementById('statusBox'));
+      set(countRef, count + 1);
     };
+    document.getElementById('undo').onclick = function () {
+      if (count > 0) set(countRef, count - 1);
+    };
+    document.getElementById('reset').onclick = function () {
+      if (confirm('Reset your solved count to 0?')) set(countRef, 0);
+    };
+
+    document.getElementById('editToggle').onclick = function () {
+      if (auth.currentUser) {
+        if (confirm('Sign out of edit mode?')) signOut(auth);
+        return;
+      }
+      var email = prompt('Email:');
+      if (!email) return;
+      var password = prompt('Password:');
+      if (!password) return;
+      signInWithEmailAndPassword(auth, email, password).catch(function (err) {
+        alert('Sign-in failed: ' + err.message);
+      });
+    };
+
+    onAuthStateChanged(auth, function (user) {
+      canEdit = !!user && user.uid === OWNER_UID;
+      document.getElementById('editControls').style.display = canEdit ? 'flex' : 'none';
+      document.getElementById('reset').style.display = canEdit ? 'block' : 'none';
+      document.getElementById('thanksMsg').style.display = canEdit ? 'none' : 'block';
+      document.getElementById('editToggle').classList.toggle('is-signed-in', canEdit);
+    });
+
+    onValue(countRef, function (snapshot) {
+      count = snapshot.val() || 0;
+      render();
+    });
 
     render();
   </script>
