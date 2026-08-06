@@ -98,7 +98,7 @@ body.game-page {
 }
 
 body.landing-page .container {
-  width: min(100%, 480px);
+  width: min(100%, 640px);
   margin: 0 auto;
   padding: 0;
   text-align: left;
@@ -107,6 +107,54 @@ body.landing-page .container {
   justify-content: flex-start;
   min-height: auto;
   padding-top: 18vh;
+}
+
+.landing-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+.landing-text {
+  flex: 0 1 360px;
+  min-width: 0;
+}
+
+.landing-photo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.landing-photo {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.landing-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.landing-links a {
+  color: var(--color-link);
+}
+
+.landing-links-cta {
+  color: var(--color-heading);
+  margin-bottom: 0.15rem;
 }
 
 body.about-page .container {
@@ -132,7 +180,6 @@ body.game-page .container {
   padding-top: 3.5rem;
 }
 
-body.landing-page h1,
 body.game-page h1 {
   font-family: 'DM Mono', monospace;
   font-size: clamp(1.45rem, 2.4vw, 1.75rem);
@@ -142,6 +189,17 @@ body.game-page h1 {
   color: var(--color-heading);
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
+}
+
+body.landing-page h1 {
+  font-family: 'DM Mono', monospace;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.2vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-heading);
+  margin-top: 0;
+  margin-bottom: 0.9rem;
 }
 
 .game-blurb {
@@ -175,15 +233,14 @@ body.game-page h1 {
   color: #FFFFFF;
 }
 
-.landing-copy {
-  border-top: 0.5px solid var(--color-border);
-  padding-top: 0.9rem;
-  margin-top: 0.35rem;
-}
-
 .landing-copy p {
+  font-family: 'DM Sans', sans-serif;
   font-size: 0.95rem;
   color: var(--color-heading);
+}
+
+.landing-copy p+p {
+  margin-top: 1rem;
 }
 
 body.landing-page nav,
@@ -509,6 +566,21 @@ body.game-page .tile.revealed:not(.star) {
     text-align: center;
   }
 
+  .landing-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .landing-text {
+    text-align: center;
+  }
+
+  .landing-photo {
+    width: 130px;
+    height: 130px;
+  }
+
   body.landing-page nav {
     justify-content: center;
     font-size: 0.85rem;
@@ -521,7 +593,7 @@ body.game-page .tile.revealed:not(.star) {
 
   body.landing-page h1 {
     font-size: 1.2rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.01em;
   }
 
   body.game-page h1,
