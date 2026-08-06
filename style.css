@@ -26,6 +26,7 @@
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-bg);
   color: var(--color-heading);
   font-family: 'DM Mono', monospace;
@@ -107,6 +108,7 @@ body.landing-page .container {
   justify-content: flex-start;
   min-height: auto;
   padding-top: 18vh;
+  padding-top: 18dvh;
 }
 
 .landing-content {
@@ -586,6 +588,7 @@ body.game-page .tile.revealed:not(.star) {
 
   body.landing-page .container {
     padding-top: 12vh;
+    padding-top: 12dvh;
     text-align: center;
   }
 
