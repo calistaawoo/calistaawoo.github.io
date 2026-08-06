@@ -140,15 +140,15 @@ window.Minesweeper = (function () {
     function rippleWin() {
       gameOver = true;
 
-      const RIPPLE_TOTAL_MS = 1000;
-      const VANISH_MS = 220;
+      const RIPPLE_TOTAL_MS = 860;
+      const VANISH_MS = 190;
       const tiles = Array.from(boardEl.children);
       const order = tiles
         .map((_, index) => index)
         .sort(() => Math.random() - 0.5);
 
       tiles.forEach((tile, index) => {
-        const delay = order.indexOf(index) * 14;
+        const delay = order.indexOf(index) * 12;
         tile.style.transition = `opacity ${VANISH_MS}ms ease ${delay}ms, transform ${VANISH_MS}ms ease ${delay}ms`;
         tile.classList.add('vanish');
       });
