@@ -70,12 +70,9 @@ window.Minesweeper = (function () {
 
         let longPressTimer = null;
         let longPressFired = false;
+        let touchActive = false;
 
         btn.addEventListener('click', () => {
-          if (longPressFired) {
-            longPressFired = false;
-            return;
-          }
           handleClick(i);
         });
         btn.addEventListener('contextmenu', (event) => {
@@ -83,17 +80,30 @@ window.Minesweeper = (function () {
           toggleFlag(i);
         });
 
-        btn.addEventListener('touchstart', () => {
+        btn.addEventListener('touchstart', (event) => {
+          event.preventDefault();
+          touchActive = true;
           longPressFired = false;
           clearTimeout(longPressTimer);
           longPressTimer = setTimeout(() => {
             longPressFired = true;
             toggleFlag(i);
           }, LONG_PRESS_MS);
-        }, { passive: true });
+        });
 
-        const cancelLongPress = () => clearTimeout(longPressTimer);
-        btn.addEventListener('touchend', cancelLongPress);
+        btn.addEventListener('touchend', (event) => {
+          event.preventDefault();
+          clearTimeout(longPressTimer);
+          if (touchActive && !longPressFired) {
+            handleClick(i);
+          }
+          touchActive = false;
+        });
+
+        const cancelLongPress = () => {
+          clearTimeout(longPressTimer);
+          touchActive = false;
+        };
         btn.addEventListener('touchmove', cancelLongPress);
         btn.addEventListener('touchcancel', cancelLongPress);
 
