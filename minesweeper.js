@@ -16,6 +16,7 @@ window.Minesweeper = (function () {
     let cells = [];
     let revealedCount = 0;
     let gameOver = false;
+    let starsPlaced = false;
 
     boardEl.style.setProperty('--board-size', opts.size);
 
@@ -43,11 +44,16 @@ window.Minesweeper = (function () {
         flagged: false,
         count: 0,
       }));
+      starsPlaced = false;
+    }
+
+    function placeStars(safeIndex) {
+      const excluded = new Set([safeIndex, ...neighbors(safeIndex)]);
 
       let placed = 0;
       while (placed < opts.starCount) {
         const i = Math.floor(Math.random() * cells.length);
-        if (!cells[i].star) {
+        if (!cells[i].star && !excluded.has(i)) {
           cells[i].star = true;
           placed++;
         }
@@ -57,6 +63,8 @@ window.Minesweeper = (function () {
         if (cells[i].star) continue;
         cells[i].count = neighbors(i).filter((n) => cells[n].star).length;
       }
+
+      starsPlaced = true;
     }
 
     const LONG_PRESS_MS = 450;
@@ -114,6 +122,7 @@ window.Minesweeper = (function () {
     function handleClick(i) {
       if (gameOver) return;
       if (cells[i].flagged) return;
+      if (!starsPlaced) placeStars(i);
       if (cells[i].star) {
         explode(i);
         return;
