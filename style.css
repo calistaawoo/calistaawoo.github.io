@@ -581,7 +581,7 @@ body.game-page .tile.revealed:not(.star) {
   }
 
   body.landing-page {
-    padding: 0.75rem 2.25rem 1.25rem;
+    padding: 0.75rem 2.25rem 2.5rem;
   }
 
   body.landing-page .container,
@@ -591,8 +591,9 @@ body.game-page .tile.revealed:not(.star) {
   }
 
   body.landing-page .container {
-    padding-top: 12vh;
-    padding-top: 12dvh;
+    padding-top: 7vh;
+    padding-top: 7dvh;
+    padding-bottom: 2rem;
     text-align: center;
   }
 
