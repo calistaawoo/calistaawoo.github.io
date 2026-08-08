@@ -59,6 +59,8 @@ window.Minesweeper = (function () {
       }
     }
 
+    const LONG_PRESS_MS = 450;
+
     function renderBoard() {
       boardEl.innerHTML = '';
       cells.forEach((cell, i) => {
@@ -66,13 +68,34 @@ window.Minesweeper = (function () {
         btn.className = 'tile';
         btn.type = 'button';
 
+        let longPressTimer = null;
+        let longPressFired = false;
+
         btn.addEventListener('click', () => {
+          if (longPressFired) {
+            longPressFired = false;
+            return;
+          }
           handleClick(i);
         });
         btn.addEventListener('contextmenu', (event) => {
           event.preventDefault();
           toggleFlag(i);
         });
+
+        btn.addEventListener('touchstart', () => {
+          longPressFired = false;
+          clearTimeout(longPressTimer);
+          longPressTimer = setTimeout(() => {
+            longPressFired = true;
+            toggleFlag(i);
+          }, LONG_PRESS_MS);
+        }, { passive: true });
+
+        const cancelLongPress = () => clearTimeout(longPressTimer);
+        btn.addEventListener('touchend', cancelLongPress);
+        btn.addEventListener('touchmove', cancelLongPress);
+        btn.addEventListener('touchcancel', cancelLongPress);
 
         boardEl.appendChild(btn);
       });

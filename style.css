@@ -472,6 +472,10 @@ body.about-page nav {
   cursor: pointer;
   transition: background 0.15s ease;
   padding: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .tile:hover:not(.revealed) {
